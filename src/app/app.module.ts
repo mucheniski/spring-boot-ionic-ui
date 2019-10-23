@@ -1,3 +1,7 @@
+import { LoginService } from './../login/login.service';
+import { CategoriaService } from './../services/categoria.service';
+import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -7,9 +11,6 @@ import { MyApp } from './app.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
-import { CategoriaService } from './../services/categoria.service';
-import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
     SplashScreen,
     CategoriaService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ErrorInterceptorProvider
+    ErrorInterceptorProvider,
+    LoginService
   ]
 })
 export class AppModule {}

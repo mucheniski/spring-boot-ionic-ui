@@ -1,4 +1,6 @@
-import { LoginDTO } from './../../models/login.dto';
+import { LoginService } from './../../login/login.service';
+import { LoginDTO } from '../../login/login.dto';
+
 import { Component } from '@angular/core';
 import { NavController, IonicPage } from 'ionic-angular';
 import { MenuController } from 'ionic-angular/components/app/menu-controller';
@@ -16,7 +18,8 @@ export class HomePage {
 
   constructor(
     public navController: NavController,
-    public menuController: MenuController
+    public menuController: MenuController,
+    public loginService: LoginService
   ) { }
 
   ionViewWillEnter() {
@@ -28,7 +31,12 @@ export class HomePage {
   }
 
   login() {
-    console.log(this.loginDTO);
+    this.loginService.authenticate(this.loginDTO)
+      .subscribe(response => {
+        console.log(response.headers.get('Authorization'));
+      },
+      error => {});
+
     this.navController.setRoot('CategoriasPage');
   }
 
