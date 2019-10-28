@@ -6,8 +6,12 @@ import { LoginDTO } from './login.dto';
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 
+import { JwtHelper } from 'angular2-jwt';
+
 @Injectable()
 export class LoginService {
+
+  jwtHelper: JwtHelper = new JwtHelper();
 
   constructor(public httpClient: HttpClient,
               public localStorageService: LocalStorageService
@@ -21,7 +25,8 @@ export class LoginService {
   successfulLogin(authorizationValue : string) {
     let token = authorizationValue.substring(7);
     let user : LocalStorageUser = {
-      token : token
+      token : token,
+      email: this.jwtHelper.decodeToken(token).sub
     }
     this.localStorageService.setLocalStorageUser(user);
   }
