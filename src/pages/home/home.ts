@@ -33,7 +33,7 @@ export class HomePage {
   login() {
     this.loginService.authenticate(this.loginDTO)
       .subscribe(response => {
-        console.log(response.headers.get('Authorization'));
+        this.loginService.successfulLogin(response.headers.get('Authorization'));
       },
       error => {});
 
