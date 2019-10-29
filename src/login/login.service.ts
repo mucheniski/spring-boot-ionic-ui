@@ -23,10 +23,10 @@ export class LoginService {
   }
 
   successfulLogin(authorizationValue : string) {
-    let token = authorizationValue.substring(7);
+    let tokenLocal = authorizationValue.substring(7);
     let user : LocalStorageUser = {
-      token : token,
-      email: this.jwtHelper.decodeToken(token).sub
+      token : tokenLocal,
+      email: this.jwtHelper.decodeToken(tokenLocal).sub
     }
     this.localStorageService.setLocalStorageUser(user);
   }

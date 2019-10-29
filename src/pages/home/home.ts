@@ -35,7 +35,9 @@ export class HomePage {
       .subscribe(response => {
         this.loginService.successfulLogin(response.headers.get('Authorization'));
       },
-      error => {});
+      error => {
+        console.log('Deu erro, // TODO: rotear!')
+      });
 
     this.navController.setRoot('CategoriasPage');
   }
