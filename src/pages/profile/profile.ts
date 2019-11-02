@@ -16,7 +16,7 @@ export class ProfilePage {
   clienteDTO: ClienteDTO
 
   constructor(
-    public navCtrl: NavController,
+    public navController: NavController,
     public navParams: NavParams,
     public localStorageService: LocalStorageService,
     public clienteService: ClienteService) {
@@ -30,7 +30,14 @@ export class ProfilePage {
         this.clienteDTO = response;
         this.getImageIfExists();
       },
-      error => {});
+      error => {
+        if (error.status == 403) {
+          this.navController.setRoot('HomePage');
+        }
+      });
+    }
+    else {
+      this.navController.setRoot('HomePage');
     }
   }
 

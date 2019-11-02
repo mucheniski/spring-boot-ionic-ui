@@ -1,9 +1,13 @@
+import { LocalStorageService } from './../login/local_storage.service';
+
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx'; // IMPORTANTE: IMPORT ATUALIZADO
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
+
+    constructor(public localStorageService: LocalStorageService) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         console.log("Passou no error-interceptor");
@@ -21,9 +25,20 @@ export class ErrorInterceptor implements HttpInterceptor {
             console.log("Erro detectado pelo interceptor:");
             console.log(errorObj);
 
+            switch (errorObj.status) {
+              case 403:
+              this.error403Handler();
+              break;
+            }
+
             return Observable.throw(errorObj);
         }) as any;
     }
+
+    error403Handler() {
+      this.localStorageService.setLocalStorageUser(null);
+    }
+
 }
 
 export const ErrorInterceptorProvider = {
