@@ -1,3 +1,4 @@
+import { LocalStorageService } from './../../login/local_storage.service';
 import { LoginService } from './../../login/login.service';
 import { LoginDTO } from '../../login/login.dto';
 
@@ -19,7 +20,8 @@ export class HomePage {
   constructor(
     public navController: NavController,
     public menuController: MenuController,
-    public loginService: LoginService
+    public loginService: LoginService,
+    public localStorageService: LocalStorageService
   ) { }
 
   ionViewWillEnter() {
@@ -31,14 +33,14 @@ export class HomePage {
   }
 
   ionViewDidEnter(){
-    this.loginService.refreshToken()
-    .subscribe(response => {
-      this.loginService.successfulLogin(response.headers.get('Authorization'));
-      this.navController.setRoot('CategoriasPage');
-    },
-    error => {
-      this.navController.setRoot('HomePage');
-    });
+    if (this.localStorageService.getLocalStorageUser() != null) {
+      this.loginService.refreshToken()
+      .subscribe(response => {
+        this.loginService.successfulLogin(response.headers.get('Authorization'));
+        this.navController.setRoot('CategoriasPage');
+      },
+      error => {});
+    }
   }
 
   login() {
