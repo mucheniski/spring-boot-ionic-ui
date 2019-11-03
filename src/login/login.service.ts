@@ -22,6 +22,10 @@ export class LoginService {
     return this.httpClient.post(`${API_CONFIG.baseUrl}/login`, loginDTO, { observe: 'response', responseType: 'text'})
   }
 
+  refreshToken() {
+    return this.httpClient.post(`${API_CONFIG.baseUrl}/auth/refresh_token`, {}, { observe: 'response', responseType: 'text'})
+  }
+
   successfulLogin(authorizationValue : string) {
     let tokenLocal = authorizationValue.substring(7);
     let user : LocalStorageUser = {
