@@ -54,4 +54,8 @@ export class HomePage {
       });
   }
 
+  signup() {
+    this.navController.push('SignupPage');
+  }
+
 }
