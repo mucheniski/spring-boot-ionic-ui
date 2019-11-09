@@ -1,3 +1,4 @@
+import { FieldMessage } from './../models/filedmessage';
 import { LocalStorageService } from './../login/local_storage.service';
 
 import { Injectable } from '@angular/core';
@@ -36,6 +37,10 @@ export class ErrorInterceptor implements HttpInterceptor {
               this.error403Handler();
               break;
 
+              case 422:
+              this.error422Handler(errorObj);
+              break;
+
               default:
               this.errorDefautlHandler(errorObj);
 
@@ -50,11 +55,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         title: 'Erro 401: Falha de autenticação',
         message: 'Email ou senha incorretos',
         enableBackdropDismiss: false,
-        buttons: [
-          {
-            text: 'OK'
-          }
-        ]
+        buttons: [{text: 'OK'}]
       });
       alert.present();
     }
@@ -65,11 +66,17 @@ export class ErrorInterceptor implements HttpInterceptor {
         title: 'Erro 403: Não autorizado',
         message: 'Email ou senha incorretos',
         enableBackdropDismiss: false,
-        buttons: [
-          {
-            text: 'OK'
-          }
-        ]
+        buttons: [{text: 'OK'}]
+      });
+      alert.present();
+    }
+
+    error422Handler(errorObj) {
+      let alert = this.alertController.create({
+        title: 'Erro 422: Validação!',
+        message: this.listErros(errorObj.errors),
+        enableBackdropDismiss: false,
+        buttons: [{text: 'OK'}]
       });
       alert.present();
     }
@@ -79,13 +86,17 @@ export class ErrorInterceptor implements HttpInterceptor {
         title: 'Erro ' + errorObj.status + ': ' + errorObj.error,
         message: errorObj.message,
         enableBackdropDismiss: false,
-        buttons: [
-          {
-            text: 'OK'
-          }
-        ]
+        buttons: [{text: 'OK'}]
       });
       alert.present();
+    }
+
+    listErros(messages: FieldMessage[]) : string {
+      let text: string = '';
+      for (let i = 0; i < messages.length; i++) {
+        text = text + '<p><strong>' + messages[i].fieldName + "</strong>: " + messages[i].message + '</p>';
+      }
+      return text;
     }
 
 }

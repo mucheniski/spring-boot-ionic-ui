@@ -1,11 +1,12 @@
+import { ClienteService } from './../../services/cliente.service';
 import { EstadoService } from './../../services/estado.service';
 import { CidadeService } from './../../services/cidade.service';
-
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EstadoDTO } from '../../models/estado.dto';
 import { CidadeDTO } from '../../models/cidade.dto';
+
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -23,12 +24,14 @@ export class SignupPage {
     public navParams: NavParams,
     public formBuilder: FormBuilder,
     public cidadeService: CidadeService,
-    public estadoService: EstadoService) {
+    public estadoService: EstadoService,
+    public clienteService: ClienteService,
+    public alertController: AlertController) {
 
       this.formGroup = formBuilder.group({
         nome: ['Joaquim', [Validators.required, Validators.minLength(5), Validators.maxLength(120)]],
         email: ['joaquim@gmail.com', [Validators.required, Validators.email]],
-        tipo : ['1', [Validators.required]],
+        tipo : ['PESSOAFISICA', [Validators.required]],
         cpfOuCnpj : ['06134596280', [Validators.required, Validators.minLength(11), Validators.maxLength(14)]],
         senha : ['123', [Validators.required]],
         logradouro : ['Rua Via', [Validators.required]],
@@ -45,7 +48,13 @@ export class SignupPage {
   }
 
   signupUser() {
-    console.log('Enviou o form');
+    // console.log(this.formGroup.value)
+    this.clienteService.insert(this.formGroup.value)
+      .subscribe(response => {
+        this.showSuccessMessage('Cliente inserido com sucesso!');
+      },
+        error => {}
+      );
   }
 
   ionViewDidLoad(){
@@ -66,6 +75,16 @@ export class SignupPage {
         this.formGroup.controls.cidadeId.setValue(null);
       },
       error =>{})
+  }
+
+  showSuccessMessage(text: string) {
+    let alert = this.alertController.create({
+      title: 'Sucesso',
+      message: text,
+      enableBackdropDismiss: false,
+      buttons: [{text: 'Ok',handler: () => {this.navController.pop();}}]
+    });
+    alert.present();
   }
 
 }
