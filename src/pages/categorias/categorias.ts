@@ -16,7 +16,7 @@ export class CategoriasPage {
   bucketBaseUrl: string = API_CONFIG.bucketBaseUrl;
 
   constructor(
-    public navCtrl: NavController,
+    public navController: NavController,
     public navParams: NavParams,
     public categoriaService: CategoriaService
   )
@@ -28,6 +28,10 @@ export class CategoriasPage {
         this.items = response;
       },
       error => {});
+  }
+
+  showProdutos() {
+    this.navController.push('ProdutosPage');
   }
 
 }
