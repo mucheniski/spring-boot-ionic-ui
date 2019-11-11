@@ -3,6 +3,7 @@ import { ClienteService } from './../services/cliente.service';
 import { LocalStorageService } from './../login/local_storage.service';
 import { LoginService } from './../login/login.service';
 import { CategoriaService } from './../services/categoria.service';
+import { ProdutoService } from '../services/produto.service';
 import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -37,7 +38,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ErrorInterceptorProvider,
     LoginService,
     LocalStorageService,
-    ClienteService
+    ClienteService,
+    ProdutoService
   ]
 })
 export class AppModule {}

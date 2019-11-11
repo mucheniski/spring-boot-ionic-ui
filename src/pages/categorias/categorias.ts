@@ -12,7 +12,7 @@ import { CategoriaService } from './../../services/categoria.service';
 })
 export class CategoriasPage {
 
-  items: CategoriaDTO[];
+  categorias: CategoriaDTO[];
   bucketBaseUrl: string = API_CONFIG.bucketBaseUrl;
 
   constructor(
@@ -25,13 +25,13 @@ export class CategoriasPage {
   ionViewDidLoad() {
     this.categoriaService.findAll()
       .subscribe( response => {
-        this.items = response;
+        this.categorias = response;
       },
       error => {});
   }
 
-  showProdutos() {
-    this.navController.push('ProdutosPage');
+  showProdutos(categoriaId: string) {
+    this.navController.push('ProdutosPage', {categoriaId: categoriaId});
   }
 
 }
