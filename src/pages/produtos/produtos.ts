@@ -37,8 +37,11 @@ export class ProdutosPage {
         .subscribe(response => {
           produto.imageUrl = `${API_CONFIG.bucketBaseUrl}/prod${produto.id}-small.jpg`;
         }, error => {});
-
     }
+  }
+
+  showDetail() {
+    this.navController.push('ProdutoDetailPage');
   }
 
 }
