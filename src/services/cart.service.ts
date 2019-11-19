@@ -34,4 +34,46 @@ export class CartService {
     return cart;
   }
 
+  removeItem(produtoDTO : ProdutoDTO) : Cart {
+    let cart = this.getCart();
+    let itemPosition = cart.items.findIndex(item => item.produto.id == produtoDTO.id);
+    if (itemPosition != -1) {
+      cart.items.splice(itemPosition, 1);
+    }
+    this.localStorageService.setLocalStorageCart(cart);
+    return cart;
+  }
+
+  increaseQuantity(produtoDTO : ProdutoDTO) : Cart {
+    let cart = this.getCart();
+    let itemPosition = cart.items.findIndex(item => item.produto.id == produtoDTO.id);
+    if (itemPosition != -1) {
+      cart.items[itemPosition].quantidade++;
+    }
+    this.localStorageService.setLocalStorageCart(cart);
+    return cart;
+  }
+
+  decreaseQuantity(produtoDTO : ProdutoDTO) : Cart {
+    let cart = this.getCart();
+    let itemPosition = cart.items.findIndex(item => item.produto.id == produtoDTO.id);
+    if (itemPosition != -1) {
+      cart.items[itemPosition].quantidade--;
+      if (cart.items[itemPosition].quantidade < 1) {
+        cart = this.removeItem(produtoDTO);
+      }
+    }
+    this.localStorageService.setLocalStorageCart(cart);
+    return cart;
+  }
+
+  total() : number {
+    let cart = this.getCart();
+    let sum = 0;
+    for (var i=0; i<cart.items.length; i++) {
+      sum += cart.items[i].produto.preco * cart.items[i].quantidade;
+    }
+    return sum;
+  }
+
 }

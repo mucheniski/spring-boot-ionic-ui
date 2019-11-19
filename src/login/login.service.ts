@@ -1,3 +1,4 @@
+import { CartService } from './../services/cart.service';
 import { LocalStorageService } from './local_storage.service';
 import { LocalStorageUser } from './local_storage_user';
 import { API_CONFIG } from './../configs/api.config';
@@ -13,8 +14,10 @@ export class LoginService {
 
   jwtHelper: JwtHelper = new JwtHelper();
 
-  constructor(public httpClient: HttpClient,
-              public localStorageService: LocalStorageService
+  constructor(
+    public httpClient: HttpClient,
+    public localStorageService: LocalStorageService,
+    public cartService: CartService
     ) {
   }
 
@@ -33,6 +36,7 @@ export class LoginService {
       email: this.jwtHelper.decodeToken(tokenLocal).sub
     }
     this.localStorageService.setLocalStorageUser(user);
+    this.cartService.createOrClearCart();
   }
 
   logout() {
