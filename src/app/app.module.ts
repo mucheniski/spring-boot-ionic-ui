@@ -1,3 +1,4 @@
+import { CartService } from './../services/cart.service';
 import { LoginInterceptorProvider } from './../interceptors/login.interceptor';
 import { ClienteService } from './../services/cliente.service';
 import { LocalStorageService } from './../login/local_storage.service';
@@ -39,7 +40,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     LoginService,
     LocalStorageService,
     ClienteService,
-    ProdutoService
+    ProdutoService,
+    CartService
   ]
 })
 export class AppModule {}

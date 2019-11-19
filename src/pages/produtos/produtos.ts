@@ -35,6 +35,7 @@ export class ProdutosPage {
       let produto = this.produtos[i];
       this.produtoService.getSmallImageFromBucket(produto.id)
         .subscribe(response => {
+          console.log('JSON do response: ' + JSON.stringify(response));
           produto.imageUrl = `${API_CONFIG.bucketBaseUrl}/prod${produto.id}-small.jpg`;
         }, error => {});
     }

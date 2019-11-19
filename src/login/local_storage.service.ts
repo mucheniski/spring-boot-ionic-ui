@@ -1,3 +1,4 @@
+import { Cart } from './../models/cart';
 import { LOCAL_STORAGE_KEYS } from './../configs/local_storage_keys.configs';
 import { LocalStorageUser } from './local_storage_user';
 
@@ -16,12 +17,31 @@ export class LocalStorageService {
     }
   }
 
-  setLocalStorageUser(localStorageUser : LocalStorageUser) {
+  setLocalStorageUser(localStorageUser : Cart) {
     if (localStorageUser == null) {
       localStorage.removeItem(LOCAL_STORAGE_KEYS.localStorageUser);
     }
     else {
       localStorage.setItem(LOCAL_STORAGE_KEYS.localStorageUser, JSON.stringify(localStorageUser));
+    }
+  }
+
+  getLocalStorageCart() : Cart {
+    let cart = localStorage.getItem(LOCAL_STORAGE_KEYS.localStorageCart);
+    if (cart == null) {
+      return null;
+    }
+    else {
+      return JSON.parse(cart);
+    }
+  }
+
+  setLocalStorageCart(localStorageCart : Cart) {
+    if (localStorageCart == null) {
+      localStorage.removeItem(LOCAL_STORAGE_KEYS.localStorageCart);
+    }
+    else {
+      localStorage.setItem(LOCAL_STORAGE_KEYS.localStorageCart, JSON.stringify(localStorageCart));
     }
   }
 
