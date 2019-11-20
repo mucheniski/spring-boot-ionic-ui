@@ -60,4 +60,8 @@ export class CartPage {
     this.navController.setRoot('CategoriasPage');
   }
 
+  checkout() {
+    this.navController.push('PickAddressPage')
+  }
+
 }
