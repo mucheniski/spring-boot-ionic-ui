@@ -13,6 +13,10 @@ export class ClienteService {
     public localStorageService: LocalStorageService) {
   }
 
+  findById(id: string) {
+    return this.httpClient.get(`${API_CONFIG.baseUrl}/clientes/${id}`);
+  }
+
   findByEmail(email: string) {
       return this.httpClient.get(`${API_CONFIG.baseUrl}/clientes/email?value=${email}`);
   }
