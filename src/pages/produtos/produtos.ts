@@ -13,7 +13,8 @@ import { API_CONFIG } from '../../configs/api.config';
 })
 export class ProdutosPage {
 
-  produtos : ProdutoDTO[];
+  produtos: ProdutoDTO[] = [];
+  page: number = 0;
 
   constructor(
     public navController: NavController,
@@ -25,17 +26,6 @@ export class ProdutosPage {
 
   ionViewDidLoad() {
     this.loadData();
-  }
-
-  loadImageUrls() {
-    for (let i = 0; i < this.produtos.length; i++) {
-      let produto = this.produtos[i];
-      this.produtoService.getSmallImageFromBucket(produto.id)
-        .subscribe(response => {
-          console.log('JSON do response: ' + JSON.stringify(response));
-          produto.imageUrl = `${API_CONFIG.bucketBaseUrl}/prod${produto.id}-small.jpg`;
-        }, error => {});
-    }
   }
 
   showDetail(produtoId: string) {
@@ -51,24 +41,49 @@ export class ProdutosPage {
   }
 
   doRefresh(refresher) {
+    this.page = 0;
+    this.produtos = [];
     this.loadData();
     setTimeout(() => {
       refresher.complete();
     }, 1000);
   }
 
+  doInfinite(infiniteScroll) {
+    this.page++;
+    this.loadData();
+    setTimeout(() => {
+      infiniteScroll.complete();
+    }, 1000);
+  }
+
   loadData() {
     let categoriaId = this.navParams.get('categoriaId');
     let loader = this.presentLoading();
-    this.produtoService.findByCategoria(categoriaId)
+    this.produtoService.findByCategoria(categoriaId, this.page, 10)
       .subscribe(response => {
-        this.produtos = response['content'];
+        let start = this.produtos.length;
+        this.produtos = this.produtos.concat(response['content']);
+        let end = this.produtos.length - 1;
         loader.dismiss();
-        this.loadImageUrls();
+        console.log(this.page);
+        console.log(this.produtos);
+        this.loadImageUrls(start, end);
       },
       error => {
         loader.dismiss();
       });
+  }
+
+
+  loadImageUrls(start: number, end: number) {
+    for (let i = start; i <= end; i++) {
+      let produto = this.produtos[i];
+      this.produtoService.getSmallImageFromBucket(produto.id)
+        .subscribe(response => {
+          produto.imageUrl = `${API_CONFIG.bucketBaseUrl}/prod${produto.id}-small.jpg`;
+        }, error => {});
+    }
   }
 
 }

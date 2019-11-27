@@ -11,8 +11,6 @@ export class LoginInterceptor implements HttpInterceptor {
     constructor(public localStorageService: LocalStorageService) {}
 
     intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log("Passou no login interceptor");
-
         let urlRequestSize = API_CONFIG.baseUrl.length;
         let isRequestNeedAuthorization = httpRequest.url.substring(0, urlRequestSize) == API_CONFIG.baseUrl;
 
