@@ -17,7 +17,7 @@ export class LocalStorageService {
     }
   }
 
-  setLocalStorageUser(localStorageUser : Cart) {
+  setLocalStorageUser(localStorageUser : LocalStorageUser) {
     if (localStorageUser == null) {
       localStorage.removeItem(LOCAL_STORAGE_KEYS.localStorageUser);
     }
